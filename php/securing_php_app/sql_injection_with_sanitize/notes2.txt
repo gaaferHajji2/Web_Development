@@ -1,0 +1,32 @@
+1--> Sanitizing Output:
+------------------------
+Just as you should take care to sanitize the data coming into your application, you need to sanitize the output of your system. This protects both your user experience and the security of your users from themselves and others.
+	**********************************************************
+2--> Outputting to the Browser:
+--------------------------------
+Not only should you take precautions when processing the data you take in from users—whether that is through web forms, API endpoints, or any other user provided data—you should also sanitize any user-generated data that is output back to the browser.
+For Example: The Data That are coming from MySQL, MongoDB, ...etc. to display to user in the browser window.
+
+Big Problem: The Data That are used in Transaction (espicially if they are distributed).
+
+The Another type of data, the data that are saved in image (the most common type attack that I used in XSS-Quizes) (popular exploit)
+
+Another popular place for this type of exploit is in an image’s XIFF data. If a user uploads an image and your application displays the XIFF data, it will need to be sanitized as well. Anywhere you are displaying data that came into your app from the outside, you need to sanitize it.
+	**********************************************************
+3--> The Most Important thing to Secure The Application is to read The Documentation of the programming language.
+	**********************************************************
+4--> For php we have many functions to avoid XSS, XSRF - attack, the most common 2-functions are: htmlentities() and htmlspecialchars().
+
+htmlspecialchars() should be your go-to function in 90% of cases. It will look for characters with special meaning (e.g., < , > , & ) and encode these characters to HTML entities.
+
+htmlentities() is like htmlspecialchars() on steroids. It will encode any character into its HTML entity equivalent if one exists. This may or may not be what you need in many cases.
+
+Understanding The data That we display in browser, then we can choose the function/s that we can use in our application/s.
+	**********************************************************
+5--> Echoing to the Command Line:
+----------------------------------
+Don’t forget to sanitize the output of any command-line script you are running. The functions for this are escapeshellcmd() and 
+escapeshellarg().
+
+They are both pretty self-explanatory. Use escapeshellcmd() to escape any commands that you are calling. This will prevent arbitrary commands from being executed. The escapeshellarg() function is used to wrap arguments to ensure they are escaped correctly, and don’t open your application up to manipulation of the structure of the commands.
+	**********************************************************

@@ -1,0 +1,70 @@
+If you use input directly from your users without modification, a malicious user can pass unexpected data and fundamentally change your 
+SQL queries.
+	*********************************
+For example if we have: 
+mysqli_query('UPDATE users SET first_name="' . $_POST['first_name'] . '" WHERE id=1001');
+you would expect the generated SQL to be: UPDATE users set first_name="Gaafer" WHERE id=1001;
+But if your malicious user types their first name as: Gaafer", last_name="Hajji"; --
+Or may write Gaafer', last_name='Hajji'; --
+--: is commit in mysql syntax.
+then where id=1001 while committed.
+
+the generated SQL then becomes:
+UPDATE users
+SET first_name="Gaafer", last_name="Hajji"; --"WHERE id=1001;#this change The query to first_name and last_name and delete id.
+	*********************************
+for guarding against SQL injection is to sanitize input (also known as escaping ). You can escape each input individually, or you can use a
+better method known as parameter binding using prepared statements (using binding + preparing for more security).
+	*********************************
+Example:
+	$host="mysql:host=localhost;dbname=cookbook";
+	$host2="localhost";
+	$user="root";
+	$pass="AnyThing";
+	$db="cookbook";//for use mysqli to connect.
+	//using PDO for make the connections
+	$conn=new PDO($host, $user, $pass);
+	if($conn){
+		$query=$conn->prepare("UPDATE users SET first_name = :first_name WHERE id = :id");//binding the parameters.
+		$query->execute([':first_name'=>$_POST['f_name'], ':id'=>1001]);
+		
+	}else{
+		die("Error Happening During Connection to DB");
+	}
+bound parameters protect your query, but they don’t protect the input data after it enters your database.
+
+You will still need to strip out and/or escape data that will be displayed back to the user. You can do this when you save the data to the 
+database or when you output it, but don’t skip this very important step.
+
+We can also use regular expressions for detecting, specifying the right user input.
+	*********************************
+1--> Prepared statements and parameterized queries are by far the best practice method of protecting against SQL injection.
+
+2--> Stored procedures are another way to protect against SQL injection. A stored procedure is a function built into your database. Using a stored procedure means you’re less likely to be susceptible to SQL injection, since your data aren’t passed directly as SQL.
+
+	1. Stored procedures are difficult to test.
+	2. They move the logic to another system outside the application.
+	3. They are difficult to track in your version control system, since they live in the database and not in your code.
+	4. Using them can limit the number of people on your team capable of modifying the logic if needed .
+	*********************************
+Client-side JavaScript: is NOT a solution for validating data, ever. It can be easily modified or avoided by a malicious user with even 
+a mediocre amount of knowledge.
+for example: if we delete the section of the events that responsble of validation the value of the forms.
+or change the type of input-tag from password two text.
+or change the value of pattern-attribute to sent malicious content.(string-format attack).
+or change the required field in the form.
+or change the range of the fields (integer-overflow attack).
+or use old browsers (IE-8 or below).
+or use frame-tag.
+or change the value of hidden-field. (get the session value if setted, get the permissions of admin if know the values 'social attack', 
+or may convert the value.)
+	*********************************
+This may sound like a dumb problem to solve, but it is one that a lot of developers and sites have fallen victim to. The most recent, 
+well-known exploit of this vulnerability was when a user exposed that Ruby on Rails was susceptible to this. When Egor Homakov originally 
+reported to the Rails team that new Rails installs were insecure, his bug report was rejected. The core team thought it was a minor concern 
+that would be easier for new developers to leave enabled by default. To get attention to this issue, Homakov hilariously “hacked” Rails’ 
+GitHub account (GitHub is built on Rails) to give himself administrative rights to their repositories. Needless to say, this proved his 
+point, and now Rails (and GitHub) is protected from this attack by default.
+	*********************************
+To be sure of the type of data, we may use typecasting.
+also we can use gettype(variable)-function for detect the value of the variable, then we can check if we can complete the operations.
