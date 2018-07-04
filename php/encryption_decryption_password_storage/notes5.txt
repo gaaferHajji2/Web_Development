@@ -66,3 +66,32 @@ I see the MD5 hashing algorithm used incorrectly more often than anything else, 
 One of the most notable examples, in 2005 researchers were able to generate collisions in MD5 checksums using a laptop. 5 The significance of that is that it doesn’t take a $200k beast of a server to break MD5, just any old laptop, and that was in 2005. In 2005 people, that was like 100 Internet years ago. No more MD5 for password hashing, please. Nonsecure hashes to verify data contents, sure. Just not for secure hashes that an attacker would be interested in breaking.
 
 MD5 is not completely broken because it is still mostly secure when used with a proper salt. That doesn’t mean that you shouldn’t move on to a more future-proven solution though.
+
+b--> SHA-1:
+-----------
+Ah good old SHA-1, trusty and secure for years. Those are IRL years too, in Internet years that’s decades. In 2005 (2005 was a bad year for security), researchers from Shandong University released a research paper 6 proving that SHA-1 collisions could be reliably generated with less than 269 hash operations. Collisions at around 280 hashing operations are considered safe cryptographically. FYI 280 is about 1.20892x1024, so “cryptographically secure” means pretty darn secure. Since then, Moore’s law 7 has ensured that SHA-1 is even less secure and should be avoided in any application that needs true security. MD5, when used with a random salt, SHA-1 is still algorithmically secure.
+
+c--> SHA-256 / SHA-512:
+-----------------------
+The SHA-2 standard was introduced as a successor for SHA-1 in 2001. It’s accepted and was accelerated a bit when SHA-1 was proven to be insecure in 2005. SHA-256 and SHA-512 are basically the same; SHA-256 uses 32-bit words, SHA-512 uses 64-bit words. They also have a different number of rounds. The core algorithm is practically identical though. SHA-2 is currently considered cryptographically secure with no known
+vulnerabilities when used with a sufficient number of rounds (>64).
+
+It has not seen the same amount of scrutiny as Blowfish though, the cypher that BCrypt uses internally. The Blowfish cypher has been around since 1991 and is still considered secure, yet using it with a weak key is a known weakness. Being based on a cypher gives BCrypt an additional layer of cost that makes it superior to a standard hashing algorithm, in other words, BCrypt is slower by design. Slow is a good thing here!
+
+Even though I recommend BCrypt, SHA-256 and SHA-512 are currently valid and secure options for secure hashing when used as part of a derivation algorithm, like PBKDF2 or the algorithm implemented with PHP’s crypt() function.
+
+d--> BCrypt:
+------------
+BCrypt is viewed by many as a newcomer and isn’t as widely known. BCrypt was released in 1999, so it’s not exactly new here. BCrypt is a key derivation function based on the Blowfish cypher, and it is iterative so it protects against brute forcing due to the cost associated with generating a hash.
+
+There are currently no published exploits of BCrypt despite the fact that it has seen considerable attention from cryptographic researchers. It has also been around for a good length of time, so as of this writing, BCrypt is considered cryptographically secure.
+
+BCrypt does have a limitation of 72 characters for the plaintext password being encrypted. This is usually taken into consideration by either stripping the excess characters or by simply validating 72 as the maximum length.
+
+e--> SCrypt:
+------------
+SCrypt is the new kid on the block. Released in 2012, it is a memory-intensive key derivation function. Theoretically, SCrypt is more secure than BCrypt due to the high cost inherent in the algorithm, but because it is so new, I don’t personally recommend its use at this time.
+
+New is a bad thing in the cryptographic world. It means that SCrypt hasn’t received the same level of attacks and scrutiny as older algorithms. There have been a few exploits reported recently, which doesn’t mean SCrypt isn’t secure, but this does take away from the security advantage it theoretically has over BCrypt.
+
+One big thing that SCrypt has going for it is that a few popular crypto-currencies are using it for their mining operations, most notably Litecoin and Dogecoin. This means that it will likely receive a large amount of attention sooner than its predecessors.
