@@ -14,5 +14,9 @@
     "application"
   ],
   "author": "Gaafer Hajji IT",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.2",
+    "express-session": "^1.15.6"
+  }
 }
