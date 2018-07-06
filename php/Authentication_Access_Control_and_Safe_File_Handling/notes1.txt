@@ -1,0 +1,24 @@
+1--> Authentication:
+--------------------
+The first step to properly handling sensitive data is authentication. You need to ensure that a user is who they say they are.
+	++++++++++++++++++++++++++++++++++
+2--> Role-Based Access Control:
+-------------------------------
+In addition to determining if the user has a valid log in, you need to determine if they have access to the page/section/feature they are requesting.
+
+You will usually use some type of abstracted access control layer on top of your regular controllers/routes/etc. This layer should map your routes to the access level required to view that route. For example, /admin/* might only be accessible to users in the Admin group. POST and PUT requests might only be accessible to editors. DELETE requests might only be accessible by Admins.
+
+The point is, each page should check the user’s access levels and determine if they are authorized for the requested action(s). You don’t want to assume that, if a user can see a form and POST it to the correct endpoint, the user is authorized to perform that action.
+
+This will help ensure protection against malicious users, as well as unexpected changes to your data by users who should not have been able to access that data in the first place.
+
+You never want to breeze through authentication security. Take it seriously! You will save yourself or other developers from unnecessary development time and headaches in the future.
+	++++++++++++++++++++++++++++++++++
+3--> Validating Redirects:
+--------------------------
+In the flow of your application, oftentimes you will POST a form to an endpoint, validate that data, perform some action, then redirect the user to the next step in the application flow.
+
+If the page you are redirecting to contains sensitive data, someone can bypass your expected flow by simply sending a request straight to this final page, bypassing your validation step.
+
+There are a few ways to handle this. The first way is to simply not redirect at all. Most of the time when you think you need a redirect, you could simply call the next method directly.
+	++++++++++++++++++++++++++++++++++

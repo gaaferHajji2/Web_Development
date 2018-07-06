@@ -3,13 +3,28 @@
 This section will be short, WAKE UP. In whatever system you store your password hashes, whether it’s in a relational database, key store, lock box, sock drawer, or file system, use either an unlimited length text field or I recommend using a varchar (255). Your hashing algorithm will produce a maximum length string, so you don’t have to worry about an attack overloading your database. Different hashing algorithms will produce different fixed length strings, so you could set your field length based on your algorithms. I instead prefer to use a larger-than-needed field length constraint to handle future hashing possibilities rather than try to save a few bytes.
 
 Using BCrypt, your hash will always have a maximum character length of 60 characters. So in theory you could get away with a varchar(60) field in your database, but this doesn’t account for future changes. It’s better to future-proof your passwords now than to try to save a few bytes in your database. So just leave it as a text field or a varchar (255), you won’t regret it.
-
+	++++++++++++++++++++++++++++++++++++++++++++++++++
 2--> Validation:
 ----------------
 The only validation that’s needed on a password field is minimum length. You should allow any character, whitespace, phrases, etc. so your users can construct as complex of a password as they want. Pass-phrases should be endorsed, “correct horse battery staple” is a much better password than “myNewPassword.” Your only worry is that the password is not complex enough, hence the minimum length. For the love of all that is good, like cat gifs, don’t do stupid things like using JavaScript to restrict copy-paste. If the user wants to use a password management tool, do all you can to make that easy for them. If you do stupid things, you’ll make your users, and the cats, very sad. Okay, that rant is over now.
 
 The only caveat to this is that with BCrypt only the first 72 characters of the password will be used, so technically you could limit it to a maximum of 72 characters and not lose any data. That does put a limit on your users though, and it is not future-proof for your next hashing algorithm. If your user has a 74-character pass-phrase memorized, it’s best to let them use that and only use the first 72 characters rather than make them think up a new pass-phrase. Some sources recommend hashing the passwords using a standard hashing algorithm (SHA-256, SHA-512, etc.) and then BCrypting the resulting hash to account for this length issue. That is a perfectly valid option. I’m not going to recommend it here simply because with a valid salt plus 72 characters of the password you will have enough data to keep your hashes secure according to current research.
-
-3--> Versions Older Than PHP 5.5:
+	++++++++++++++++++++++++++++++++++++++++++++++++++
+3--> Versions Older Than PHP 5.5:	
 ---------------------------------
 If you are using a PHP version less than 5.3.7, you need to upgrade to at least 5.3.7 to have a decent level of security. There is really no other sound recommendation I feel comfortable giving. If you are on an older version, there are many bug fixes that are patched with upgrades. Specifically to this case example, there was a BCrypt vulnerability patched in 5.3.7. I will be using the $2y$ prefix in this example, this is the “always to specification” prefix, meaning it has been updated with the vulnerability fix and is the most up-to-date logic. First, let’s generate a unique random salt. There are a few ways to do this in PHP depending on what extensions are compiled on your system.
+	++++++++++++++++++++++++++++++++++++++++++++++++++
+4--> Brute Force Protection:
+----------------------------
+You can have the best password hashes out there, like totally secure dude, but that doesn’t do you any good if someone just hammers away at your login page until they find the correct password. Brute forcing is the process of someone using software to repeatedly try different passwords until they get in.
+
+If an attacker can only try three passwords per minute, then it’s going to take them forever to find the user’s password, so they move on. Your users are safe. You don’t have to limit it at three exactly, three or five or ten are pretty popular numbers; personally I wouldn’t go over ten per minute.
+
+Next up you can expand on that a bit: block based on IP. Only allow X number of login attempts from a certain IP across all users instead of just each individual user. Just be sure to include good error messages and reasonable access reinstatement times; corporate users often share the same public IP address, so you don’t want to punish thousands of valid users due to one bad user if you can help it .
+	++++++++++++++++++++++++++++++++++++++++++++++++++
+5--> Upgrading Legacy Systems:
+------------------------------
+Now to the elephpant in the room. Get it? ElePHPant. Yeah, it’s been a long night, sorry. So how to you upgrade your existing system that has MD5 passwords with no salt? I’m going to give you two options:
+• Path 1: As each user logs in, you will silently upgrade their hash to use BCrypt. They won’t even know the difference. Soon enough you will have a database of well-secured passwords.
+
+• Path 2: Use BCrypt to hash the existing MD5 hashes that are in the database. New passwords will be hashed with MD5 first and then BCrypt.
