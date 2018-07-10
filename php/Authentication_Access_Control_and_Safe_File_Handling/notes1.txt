@@ -22,3 +22,16 @@ If the page you are redirecting to contains sensitive data, someone can bypass y
 
 There are a few ways to handle this. The first way is to simply not redirect at all. Most of the time when you think you need a redirect, you could simply call the next method directly.
 	++++++++++++++++++++++++++++++++++
+4--> Obfuscation:
+-----------------
+Have you heard the phrase “security through obscurity”? It’s rarely true, but in some cases it is helpful. Most applications will use an ID field in each table as a primary key. This ID is then used throughout the system to access data. It is passed through URLs, forms, and APIs to denote which piece of data is needed(We can do that manually, by open the database and show the records one by one and check the password hashes one by one and using security tool to check the strength of the password).
+
+Sometimes, though, you don’t want to expose the user to the actual row ID. Maybe you are launching a new product and don’t want the user to know that they are only the 13th user. Maybe you have public data but don’t want your site to be easily crawled by scraping bots.
+
+In these cases, you can obfuscate the ID to something that isn’t incremental (such as 1, 2, 3, etc.) but can be translated to your ID field.
+(we can use mathmetics function to calculate non-repeated id and give to the user, also we can after calculate ID we can hash it).
+
+In PHP we can use HashIDs library to hash passwords, id, ...etc.
+
+in most cases, obscurity(ambiguity) doesn’t protect you from any legitimate attacks. You shouldn’t rely on it for security. It is simply a means of making things a little harder to find.
+	++++++++++++++++++++++++++++++++++

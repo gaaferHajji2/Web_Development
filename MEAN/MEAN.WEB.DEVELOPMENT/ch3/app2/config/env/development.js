@@ -1,5 +1,6 @@
 console.log('exports config.js-file');
 
 module.exports = {
-	sessionSecret:'developmentSessionSecret'
+	sessionSecret:'developmentSessionSecret',
+	db:'mongodb://localhost:27017/mean-book'
 }

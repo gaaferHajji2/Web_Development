@@ -7,7 +7,7 @@ exports.render = function(req, res){
 	req.session.lastVisit = new Date();
 
 	//for debugging pupose
-	console.log(req.method, req.url)
+	console.log(req.method, req.url);
 	//res.send('Salam Alekoum');
 	res.render('index', {title:'Salam Alekoum'});
 };
