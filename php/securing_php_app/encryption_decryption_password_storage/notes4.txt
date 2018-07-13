@@ -1,0 +1,23 @@
+Paths:
+------
+a--> Base Path:
+---------------
+You should ensure that users are on the HTTPS version of your site whenever it is needed. This can be done in your web server config using 
+redirects. Another simpler option is to set the base path of your application to use your HTTPS URL, for example, https://yourApp.com , and 
+force a redirect using the base path if a user comes in on HTTP. Quite often you will want to allow HTTP on certain pages and require HTTPS on
+others. This is where your web server configs and proper routing in your code come in.
+
+b--> Relative Paths:
+--------------------
+There is one more thing to mention that isn’t necessarily security related but will make your life a lot easier when using both HTTP and 
+HTTPS on one site. URLs for assets, for example, CSS or JS, can begin with double forward slashes instead of http:// or https:// to reference
+the current protocol. For example, on your home page you might have: <link type="text/css" rel="stylesheet" href="//ass\ ets/main.css" />
+
+Navigating to https://yourApp.com would cause this to load: https: //yourApp.com/assets/main.css
+
+whereas navigating to http://yourApp.com would load: http: //yourApp.com/assets/main.css
+
+That’s just a little trick to make your life a little easier, because I care.
+
+(very used for diffense from XSS-attack).
+

@@ -1,0 +1,18 @@
+1--> Race Conditions:
+---------------------
+Race conditions are not super common in PHP, but are very hard to debug once they occur. It is best to handle them before they happen. A race condition is when multiple things are happening at once, causing unexpected logic flow. The issue is when Block B executes before Block A, due to Block A taking longer to perform.
+
+A basic example is two processes writing to the same file. Without a transactional locking mechanism in place, data is susceptible to corruption. If you expect Process A to be finished writing to a file before Process B starts, data could be overwritten, written on top of other data, or many other types of data corruption. With transactional locking in place, you ensure Process A is finished writing to the file before allowing Process B to write to the same file.
+
+This example is very process-specific, but the main concept of preventing race conditions is to make logic transactional where it should be.
+
+Another example is with database writes. To prevent race conditions in the database, use transactions to apply certain database changes only if all statements are successful. The general concept is that if only one thing is supposed to happen at a time, you should check to ensure that each step has finished before proceeding to the next step.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> Outdated Libraries/ External Programs:
+-------------------------------------------
+Another quick item to bring to your attention is outdated libraries . The best way to ensure that your code stays safe is to keep all of your dependencies up to date. No matter how secure the code you personally write is, all it takes is a single security vulnerability in any library you use and your site can be exploited.
+
+Another thing to keep in mind is external programs you use on your server. For example, PhpMyAdmin has had several security flaws throughout its lifetime that have left servers vulnerable. Outdated Wordpress installations are also well known in development circles as a back door for hackers. Any program that exposes critical functions on your server is a possible attack entry point.
+
+Try to keep your external dependencies to a minimum and always keep them up to date with their latest security releases.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -1,0 +1,36 @@
+1--> Never Trust Yourself: Use Safe Defaults:
+---------------------------------------------
+One of the core concepts of a secure system is safe defaults. Whenever possible (and it’s usually possible), you should define variables, properties, and so forth early with a safe default.
+
+A safe default usually means a NULL, empty, or FALSE state. When determining logic flow, the default should always be a failure.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> Never Trust Dynamic Typing: It’s Not Your Friend:
+------------------------------------------------------
+Dynamic typing is a feature loved by newer programmers, because it seems to make development easier. Dynamic typing means you don’t have to be so picky about typing; you just get close enough and it’ll work. The problem with this is it doesn’t always work the way you’d expect.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3--> Cross-Site Scripting:
+--------------------------
+Cross-site scripting (XSS) is the process of injecting malicious code into the target web site. This can be done in several ways, but the end result is the user’s browser runs unauthorized code as themselves, within their current session.(For Example: Don't set any malicious code in web browser console.)
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4--> Nonpersistent XSS:
+-----------------------
+This is the traditional type of XSS exploit. It involves injecting data into a site and then guiding users to the malicious content.
+
+Say a page on your site takes ?page_num=2&per_page=50 as query string parameters. If you do not escape these parameters, an attacker could change these values to malicious code. This code could take the user to a delete page, run JavaScript in their browser, or any number of client side attacks.
+
+After injecting their malicious code, the attacker somehow gets a user to visit the page. When the user arrives, the application will verify their valid user session and execute the malicious code. A user could even end up deleting their own account!
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+5--> Persistent XSS:
+--------------------
+A persistent XSS exploit is an exploit stored permanently on the server. For example, a social sharing site like Facebook allows users to save messages and display them to other users. An attacker could store malicious code in a Facebook post. If Facebook was not properly escaping this data when displaying it back to other users, that code would be executed. So anyone who sees the attacker’s status would be running this malicious code.(Like Saving Malicious code in Image).
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+6--> Attack Entry Points:
+-------------------------
+I just mentioned a couple examples of XSS exploit entry points, but those are not the only ones. Basically anywhere you take input from a user and display it back on a web page is an opportunity for an attacker to exploit your site. Be sure to think about all places data enters your system, not just input fields. For example, maybe you allow users to upload images and then redisplay the image XIFF data. Maybe you parse uploaded CSV files of various data exports from external programs. Anywhere that you redisplay information, it needs to be protected.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+7--> How to Protect Yourself:
+-----------------------------
+The fix for this is not very difficult. First, never take data directly from a URL and echo it back to the browser. The same goes for data from other sources, like your database or uploaded files. To protect yourself, you simply need to escape data going into your database and escape data being displayed back to your users.
+
+PHP makes this very simple with the built-in function htmlentities() . This function will properly handle the majority of your data.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

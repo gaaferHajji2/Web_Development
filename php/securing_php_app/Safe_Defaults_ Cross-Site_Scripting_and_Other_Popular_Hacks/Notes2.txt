@@ -1,0 +1,20 @@
+1--> Cross-Site Request Forgery:
+--------------------------------
+Cross-site request forgery (CSRF) is basically the opposite of an XSS exploit. Where XSS takes advantage of the user by means of a trusted web site, CSRF takes advantage of the web site by means of a trusted user.
+
+An example of this is an attacker sending out fake e-mails with a link to delete a blog post, an e-mail, or whatever. The target user then clicks the link and arrives at a delete page. Because the user is an administrator with a valid session, your application goes ahead and deletes the record as requested. The user had no idea that the link was taking them to it and now their account has been deleted without their consent. Not cool.(for example: gishing attacks).
+
+This doesn’t have to be a text link either; it is often attached to an image or a button. This might sound like a small risk because most critical web site functions are behind forms that expect POSTed data. But this can just as easily be expanded upon to use a button or JavaScript to submit hidden forms.
+	++++++++++++++++++++++++++++++++++++++++++++++++
+2--> How to Protect Against Forgeries:
+--------------------------------------
+The first step is to ensure no data-altering actions are performed by GET requests. Anything that performs an action on data should require a POST, PUT, or DELETE request. If the user clicks a delete button, they should then be taken to a form used to confirm the action. If data-altering actions need to be performed over GET (maybe for a RESTful API), you can require a unique token in the query string. In the following examples I will be using POST data, but the exact same concepts apply when dealing with GET requests. Just set the token in the query string instead of in the POST parameters.
+
+Now that you are submitting forms for your data manipulations, you will need to add CSRF tokens to your forms. The CSRF token will be a standard Nonce (Number used Once). You will generate a random token, store it in the user’s session, then add it as a hidden field to your form. Once the form is POSTed, you can check the CSRF token against the one in the session to validate the request.(For Example: when we scrape the data we must get all the hidden fields).
+
+So for every number not repeated we generated we should save in our temporary database, and sessions, so we can be save from any random number that we don't save in our temp-db.
+	++++++++++++++++++++++++++++++++++++++++++++++++
+3--> Multiple Form Submits:
+---------------------------
+Another prolific issue in PHP applications is multiple form submissions. A user submits a form to perform some action, let’s say transferring 20 Bitcoins from one wallet to another. The user clicks submit, but they don’t notice a change immediately, so they click again. Now the user has inadvertently transferred 40 Bitcoins instead of 20. Luckily for us, the CSRF token logic I just discussed will handle this without any extra work. To prevent this in most situations, you just need to pass a unique token, validate it, then clear it once it has been processed.
+	++++++++++++++++++++++++++++++++++++++++++++++++

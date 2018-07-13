@@ -1,0 +1,90 @@
+1--> HTTPS:
+-----------
+HTTPS: HTTP Secure or HTTP on Secure.
+
+The important of it is the power of encryption that used while transfer files, images, text...etc.
+we can use public/private key for enc/dec data.
+we use certificates to ensure that every thing is ok.
+One of most attack that we can avoid using certificates is: Man-in-Middle Attack.
+	*****************************************
+2--> Limitations of HTTPS:
+--------------------------
+a--> Virtual Hosts:
+-------------------
+Under normal configurations, virtual hosts cannot be used with SSL. This is a problem if you’re using shared hosting or simply running 
+multiple sites on the same server. The reason for this is because the server can’t determine the host header until the connection has been
+completed, which requires the SSL authentication. Because certificates can only have one host, this means it will simply not work. The 
+easiest way around this is to set up multiple IP addresses and use IP-based hosts instead of the name-based host resolution you’re probably 
+used to.
+
+There are, however, some hosting providers with shared certificates that can be used across the sites hosted with them. This can enable you 
+to quickly and inexpensively support HTTPS. The main issue with this is that the domain would need to reflect the hosting provider’s domain 
+name. For example instead of
+
+https: //yourApp.com/login
+
+the URL would be something like
+
+https: //yourHost.com/yourApp/login
+
+This may or may not be a concern depending on your application and branding needs .
+
+b--> Speed:
+-----------
+HTTPS connections require SSL handshakes to establish the connection, thus making the overall transfer slower. Once that initial handshake is 
+performed, additional connections only require the encryption and decryption of the content, meaning that once the initial connection is 
+complete, subsequent connections aren’t much slower. The performance impact is incredibly low though, but this is not a valid reason to 
+discredit the use of HTTPS.
+
+c--> Caching:
+-------------
+the secret sauce behind your super quick load times. But you have to say it with a British accent. Modern browsers will cache HTTPS content 
+the same as HTTP content, so there is no disconnect there. To cause your older browser to support caching, set the Cache-Control header, for 
+example:
+
+header('Cache-Control: max-age=31536000');
+
+This would tell the browser to cache for one year.
+The real issue comes with proxy caching. Proxy caching might come from an ISP or a service meant to speed up connections. This is mostly used 
+in rural parts of the world that have slow Internet connection speeds. Using HTTPS, this type of caching is impossible because all the 
+traffic the proxy sees is encrypted. This is not a major issue for most sites, but if you have a large global user base or an application 
+that targets users in remote locations, this should be considered carefully.
+
+There is one other thing you should think about. There is a good chance that there are parts of your site that should NOT be cached. This 
+means that you shouldn’t just let the browser cache everything. You need to sit down and plan out which parts of your application should be 
+cached and for how long. For example, CSS and JavaScript should probably be cached for a significant amount of time; whereas the user’s 
+timeline view should update very often.
+	*****************************************
+2--> Certificate Types:
+-----------------------
+a--> Domain Validated Certificates do not verify as much information as their counterparts, but they are substantially less expensive. 
+Usually starting around $50 per year, they will likely be the best option for small sites. The main down side from a user perspective is that
+there is usually some distinction in the browser between the two, for example, a Domain Validated Certificate might only show a lock symbol 
+in the address bar, while an Extended Validation Certificate will show the full green address bar.
+
+b--> Extended Validation Certificates are the gold standard of SSL certificates. They not only validate that you are the owner of the domain,
+but they also verify the identity and legitimacy of the domain owner. Because this usually requires a personal effort on the part of the 
+certificate authority, these certificates are significantly more expensive. Usually Extended Validation Certificates start at around $500 per 
+year. This will be the certificate of choice for most large and reputable companies. Browsers will display the full green address bar when an 
+Extended Validation Certificate is in use, giving users more peace of mind.
+	*****************************************
+3--> When to Use HTTPS:
+-----------------------
+The traditional view has been to use HTTPS anywhere credentials or other sensitive data is passed to the server. For many years this has 
+meant that login pages and shopping carts were all that was encrypted. These are still valid and necessary places to use encryption, but this
+will leave the rest of the user’s session open to man-in-the-middle attacks.
+	*****************************************
+4--> Implementing HTTPS:
+--------------------------
+What Kind of SSL Certificate Do I Need?
+The main question to ask yourself is do you need to secure subdomains or not? If you need to secure multiple subdomains, such as:
+api.yourApp.com
+docs.yourApp.com
+yourMom.yourApp.com
+cart.yourApp.com
+
+then you’ll need a Wildcard SSL Certificate. If you don’t need that capability and only need to secure something like
+
+yourApp.com
+
+then a standard certificate will work just fine. The only deterrent to getting the Wildcard just in case you need it later is the cost.
