@@ -1,0 +1,2 @@
+1--> In Linux/Ubuntu 16.04LTS: we set the permission 777 to upload directory.
+	sudo chmod 777 /path/to/upload/directory.

@@ -3,20 +3,36 @@ var Schema	= mongoose.Schema;
 
 var UserSchema = new Schema({
 	firstName: String,
+	
 	lastName:String,
+	
 	email:{
 		type:String,
-		index: true
+		index: true,
+		match:/.+\@.+\..+/
 	},
+	
 	username:{
 		type:String,
 		trim:true,//example of simple modifiers.
-		unique: true//this is the index.
+		unique: true,//this is the index.
+		required: true
 	},
-	password:String,
+	password:{
+		type:String,
+		validate: [function(password){
+			return password.length >=6;
+		}, 'Password should be longer']
+	},
+	
 	created:{
 		type: Date,
 		default: Date.now
+	},
+	
+	role:{
+		type: String,
+		enum:['Admin', 'Owner', 'User']
 	},
 	
 	website:{
@@ -53,9 +69,15 @@ You simply changed the setter modifier to a getter modifier by changing the set 
 */
 UserSchema.set('toJSON', {getters: true});
 
+UserSchema.statics.findOneByUsername=function(username, callback){
+	this.findOne({username: new RegExp(username, 'i')}, callback);
+}
+
 //here we define the model that we want to use to save user data.
 //the first parameter is the name of schema.
 //the second parameter is the structure of the schema.
 mongoose.model('User', UserSchema);
 
 console.log("User Schema Model Created Successfully");
+			/*--------------------------------------------------*/
+

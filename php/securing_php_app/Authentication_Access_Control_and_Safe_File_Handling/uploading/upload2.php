@@ -8,7 +8,7 @@
 			<fieldset>
 				<legend>Image To Upload</legend>
 				<label>Choose Image To Upload: </label>
-				<input type="upload" name="filename"/><br><br>
+				<input type="file" name="filename"/><br><br>
 
 				<input type="submit" value="Upload Image"/>
 			</fieldset>

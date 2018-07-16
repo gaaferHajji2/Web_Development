@@ -50,9 +50,7 @@ exports.read = function(req, res){
 
 //You will use the userById() method as a middleware to deal with the manipulation of single documents when performing read, delete, and update operations.
 exports.userByID = function(req, res, next, id){
-	User.findOne({
-	_id:id
-	}, function(err, user){
+	User.findOne({ _id:id }, function(err, user){
 		if(err){
 			return next(err);
 		}else{
