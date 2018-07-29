@@ -1,0 +1,68 @@
+<html>
+	<!--Test Tabs-->
+	<head>
+		<title>Layout 2</title>
+
+		<meta charset="UTF-8"/>
+		<meta http-quiv="X-UA-Compatible" content="LE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+		<link href="../../bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet"/>
+		<link href="./styles/myphoto.css" type="text/css" rel="stylesheet"/>
+	</head>
+
+	<body>
+		<div class="container-fluid myphoto-section bg-myphoto-welcome">
+			<div class="container">
+				<div class="jumbotron">
+					<h1>Salam to MyPhoto</h1>
+					<p>Photographs you can cherish!</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container-fluid myphoto-section bg-myphoto-dark">
+			<div class="row">
+				<h3>Services</h3>
+				<!-- 
+				We create an unordered list element ( ul ) with the nav base class, and the nav-tabs class to apply the tab styling. The list elements 					are then created, with the tab heading text and a href to the relevant tab content. The nav-item class is applied to each list item to 					denote that the item is indeed a navigation item (the nav-item class adjusts the margin and float of the list item, and ensures that 					the list items are not stacked on top of each other, but instead appear next to one another). The anchor	element that is used to 				reference the tab's corresponding section is given a nav-link class.
+				-->
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a href="#services-events" data-toggle="tab" class="nav-link active">Events</a>
+					</li>
+					
+					<li class="nav-item">
+						<a href="#services-personal" data-toggle="tab" class="nav-link">Personal</a>
+					</li>
+					
+					<li class="nav-item">
+						<a href="#services-prints" data-toggle="tab" class="nav-link">Prints</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="container-fluid myphoto-section bg-myphoto-light">
+			<div class="row">
+				<h3>Gallery</h3>
+			</div>
+		</div>
+		
+		<div class="container-fluid myphoto-section bg-myphoto-dark">
+			<div class="row">
+				<h3>About</h3>
+			</div>
+		</div>
+		
+		<div class="container-fluid myphoto-section bg-myphoto-light">
+			<div class="row">
+				<h3>Contact US</h3>
+			</div>
+		</div>
+		
+		<footer class="bg-myphoto-dark">Footer placeholder</footer>
+		<script src="../../jquery/jquery-3.3.1.js"/>
+		<script src="../../bootstrap/js/bootstrap.js"/>
+	</body>
+</html>
