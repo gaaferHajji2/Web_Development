@@ -1,0 +1,27 @@
+Technique: Apache Log Injection → LFI → Code Execution:
+-------------------------------------------------------
+How Does Apache Log “ Poisoning ” Work?
+---------------------------------------
+The logs we are looking to inject into are simply the Apache access logs. Web Server requests are stored in this file. Obviously being that requests are stored in an access log by Apache, specially crafted requests can “ Poison ” the Apache access logs.
+
+What is meant by poison? Fill the logs with PHP Code (which is not meant to be in the logs) which can be executed if a File Inclusion (or other vulnerability) is exploited.
+
+What is URL Encoding?
+---------------------
+Using URL Encoding means the replacement of characters outside of the ASCII character (0 to 255) set with a “ % ” character followed by two hexadecimal digits that relate to the character values in the ISO-8859-1 character set.
+
+This is done because URLs can only contain ASCII characters, although spaces can be replaced with " + " .
+
+Examples:
+---------
+NULL - %00
+CR - %0D
+LF - %0A
+	++++++++++++++++++++++++++++++++++++++++++++++++++++
+Performing the Log Injection:
+-----------------------------
+If we use a browser to try and poison the Apache logs, certain characters in our script will be URL encoded and hence make the injection useless.
+
+However the solution is simple, we can code a simple client in C/C++, PHP, Python, Perl, Ruby or any other language of our choosing.
+Or if we want to do this as quick as possible, we can simply fire up good old telnet.(for example: on android device with root permission and no telnet password -- port 23 is open).
+	++++++++++++++++++++++++++++++++++++++++++++++++++++

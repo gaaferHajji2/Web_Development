@@ -1,0 +1,43 @@
+1--> File Inclusion & File Upload Vulnerabilities:
+---------------------------------------------------
+If a file with any extension containing PHP code is able to be uploaded, a Local File Inclusion exploit can then be In a sense changed into a Remote Code Execution, and of course through PHP code execution Remote Command Execution.
+
+LanguageFileIncludeVuln.php:
+<?php
+if(isset($_GET['language']))
+	$language = $_GET['language'];
+
+include($language.'.php');
+?>
+
+Above is a vulnerable PHP Script (Local File Inclusion) that could be used to include PHPFileFakeMIME.jpg. This of course could also be done with phpcodetobeexecuted.jpg to display the out of phpinfo().
+
+It Means that all the scripts must include together, and to avoid that we must:
+	1--> sanitize the output.
+	2--> check the limited input from list.
+	3--> set permission on the files.
+	4--> check the final output if content any invalid character(<scscriptript>...</scscriptript>).
+	5--> use getimagesize() to validate the file size and content.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> Bypassing Image File Check Validation:
+-------------------------------------------
+When creating a File Upload script in PHP the programmer will usually use a more effective way of validating safe File Uploads than the examples above. The programmer might decide that using a function such as getimagesize() in PHP can be used to validate whether or not the file is an image file or not. The function will return an array of information relating to the image file such as it's height and width, this can be used to validate whether or not a file even with a misleading extension is really an image.
+
+3--> The Solution – Image Comments:
+-----------------------------------
+Many applications for creating graphics allow you to create image comments. You can use GIMP Image Editor to edit comments of a GIF file for example. Simply open GIMP and File → New Set the image size and click OK.
+
+Select GIF as the file type, give your file a filename and hit save, you then will be enter your PHP code as the image comment.
+
+If we open the GIF image file using a program which can read text such as cat, we can see the contents of the image file we created.
+Then we can display the comment
+
+we can do the same thing using gifsicle-program:
+Kali Linux Installation: apt-get install gifsicle.
+Ubuntu Installation: sudo apt-get install gifsicle.
+
+gifsicle < mygif.gif -- comment "<?php echo 'Current PHP version: ' . phpversion(); ?>" > output.php.gif
+
+mygif.gif is the input file.
+output.php.gif is the output file.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

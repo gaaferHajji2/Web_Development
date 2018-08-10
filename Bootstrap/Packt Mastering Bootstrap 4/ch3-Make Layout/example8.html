@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Layout 8</title>
+        <link rel="stylesheet" href="../../bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="styles/myphoto.css" />
+        <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet" type="text/css">
+				<link href="http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        
+    </head>
+    <body>
+    		<!-- 
+    			Navbar different between bootstrap 4 alpha and between bootstrap 4 beta.
+    			
+    			To Display as vertical navbar we remove: navbar-expand-lg.
+    		-->
+				<nav class="navbar navbar-myphoto navbar-expand-lg navbar-expand-md navbar-expand-xl" id="welcome">
+					
+					<a class="navbar-brand" href="#">MyPhoto</a>
+					
+						<!-- 
+						we set navbar-pills instead of navbar-nav to wrap the content when the size become small.
+						
+						The dropdown class itself simply sets the CSS position property to relative . There are several other classes specifying how the 							drop-down menu, and other items within the drop-down, such as the divider, look and behave. All these style definitions can be 							found in bootstrap/scss/_dropdown.scss . The interactions and behaviors of the dropdown component are actually handled and 							triggered by an out-of-the-box Bootstrap library, dropdown.js . The dropdown.js uses CSS selectors to hook into 										  dropdown-specific    elements, and toggles CSS classes to execute certain behaviors. You can find the dropdown
+						library at ../../bootstrap/js/dist/dropdown.js.
+						
+						Drop-down menus in Bootstrap 3:
+						-------------------------------
+						Notice the difference in how drop-down menus are created in Bootstrap 4. To implement the same drop-down menu functionality using 						Bootstrap 3, we would need another unordered-list element as a child of the Profile anchor tag. We would then only apply the 							dropdown-menu class. The individual menu items would be represented as list items. Furthermore, Bootstrap 4 introduced the dropdown-divider 		class, replacing the Bootstrap 3 divider class. The appearance of the two is the same, however, and both serve as a visual cue to 						the separation between Profile functionality, and logging out of the site.
+						
+						What is a modal window?
+						-----------------------
+						A modal window in web development is an element that is layered on top of the main webpage content to give the impression of a 							separate window, which requires user interaction and prevents the user from using the main content.
+						
+						We set data-toggle="modal" to tell Bootstrap we want to open a modal , and data-target is a reference to the id of the modal we 						want to surface.
+						-->
+						<div class="collapse navbar-toggleable-lg" id="navigation">
+							<ul class="nav nav-pills">
+								<li class="nav-item"><a class="nav-link" href="#welcome">Welcome</a></li>
+								<li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+								<li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+								<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+								<li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+								<!-- Make Drop Down Menu -->
+								<li class="nav-item dropdown ml-auto">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+										Profile <span class="caret"></span>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#profile-modal">
+											Profile
+										</a>
+										
+										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#settings-modal">
+											Settings
+										</a>
+										
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="#">
+											Logout
+										</a>
+									</div>
+								</li>
+							</ul>  
+						</div>
+						
+						<!--
+						use the hamburger interface at lower resolutions. First, let's add the hamburger.
+						What is a hamburger?
+						--------------------
+						A hamburger, in web development, refers to a specific style of button or icon, representing a list item. Represented as three 						horizontal and parallel lines (resembling a hamburger), a hamburger button generally surfaces navigation options when selected. The 						hamburger has become popular and useful for condensing navigations on small displays.
+						-->
+					<button class="navbar-toggler d-md-block ml-auto" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false">
+						☰
+						</button>
+				</nav>
+				
+				<div class="modal" id="profile-modal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+								<h4 class="modal-title" id="profile-modal-label">Profile</h4>
+							</div>
+							<div class="modal-body">
+								Profile
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal" id="settings-modal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+								<h4 class="modal-title" id="settings-modal-label">Settings</h4>
+							</div>
+							<div class="modal-body">
+								Settings
+							</div>
+						</div>
+					</div>
+				</div>
+    
+        <div class="container-fluid myphoto-section bg-myphoto-welcome" id="services">
+            <div class="container">
+                <div class="jumbotron">
+                    <h1>Welcome to MyPhoto</h1>
+                    <p>Photographs you can cherish!</p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid myphoto-section bg-myphoto-dark">
+            <div class="container">
+                <div class="row">
+                    <h3>Services</h3>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="#services-events" data-toggle="tab" class="nav-link active">Events
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#services-personal" data-toggle="tab" class="nav-link">Personal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#services-prints" data-toggle="tab" class="nav-link">
+                        Prints</a>
+                    </li>
+                </ul>
+                <div class="tab-content bg-myphoto-light">
+                    <div role="tabpanel" class="tab-pane active" id="services-events">
+                        <div class="container">
+                            <div class="row">
+                                <p>Lorem Ipsum</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="services-personal">
+                        <div class="container">
+                            <div class="row">
+                                <p>Lorem Ipsum</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="services-prints">
+                        <div class="mx-auto" style="width:50%">
+                            <h1 class="bg-primary text-lg-center">Special Offers</h1>
+                        </div>
+                        <div class="container">
+                            <h1 class="d-none d-lg-block">Our Print Sizes</h1>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-3 push-sm-3">
+                                    <h5 class="text-hide">Small</h5>
+                                    <div class="row">
+                                        <div class="col-sm-4 bg-info">6x5
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€15</div>
+                                                <div class="col-sm-3 text-success">€8</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">8x10
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€18</div>
+                                                <div class="col-sm-3 text-success">€11</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">11x17
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€25</div>
+                                                <div class="col-sm-3 text-success">€20</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3 push-sm-3">
+                                    <h5 class="text-hide">Medium</h5>
+                                    <div class="row">
+                                        <div class="col-sm-4">12x18
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€28</div>
+                                                <div class="col-sm-3 text-success">€23</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 bg-info">16x20
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€35</div>
+                                                <div class="col-sm-3 text-success">€25</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">18x24
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€40</div>
+                                                <div class="col-sm-3 text-success">€32</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3 push-sm-3">
+                                    <h5 class="text-hide">Large</h5>
+                                    <div class="row">
+                                        <div class="col-sm-4 bg-info">19x27
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€45</div>
+                                                <div class="col-sm-3 text-success">€30</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">20x30
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€48</div>
+                                                <div class="col-sm-3 text-success">€40</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 bg-info">22x28
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€55</div>
+                                                <div class="col-sm-3 text-success">€40</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3 pull-sm-9">
+                                    <h5 class="text-hide">Extra Large</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">24x36
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€60</div>
+                                                <div class="col-sm-3 text-success">€55</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 bg-info">27x39
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€75</div>
+                                                <div class="col-sm-3 text-success">€60</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 bg-info">27x40
+                                            <div class="row">
+                                                <div class="col-sm-3 text-muted">€75</div>
+                                                <div class="col-sm-3 text-success">€60</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-danger ml-auto float-lg-right">
+		                              <p class="label">Terms and Conditions Apply</p>
+		                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid myphoto-section bg-myphoto-light" id="gallery">
+            <div class="container">
+                <div class="row">
+                    <h3>Gallery</h3>
+                    <div id="gallery-carousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+                        <div class="carousel-inner" role="listbox">
+                            <div style="height: 400px" class="carousel-item active">
+                                <img src="images/brazil.png" class="img-fluid">
+                                <div class="carousel-caption">
+                                    Brazil
+                                </div>
+                            </div>
+                            <div style="height: 400px" class="carousel-item">
+                                <img src="images/datsun.png" class="img-fluid">
+                                <div class="carousel-caption">
+                                    Datsun 260Z
+                                </div>
+                            </div>
+                            <div style="height: 400px" class="carousel-item">
+                                <img src="images/skydive.png" class="img-fluid">
+                                <div class="carousel-caption">
+                                    Skydive
+                                </div>
+                            </div>
+                        </div>
+           
+                        <ol class="carousel-indicators">
+                            <li data-target="#gallery-carousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#gallery-carousel" data-slide-to="1"></li>
+                            <li data-target="#gallery-carousel" data-slide-to="2"></li>
+                        </ol>
+                        
+                        <a class="carousel-control-prev" href="#gallery-carousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#gallery-carousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid myphoto-section bg-myphoto-dark" id="about">
+        	<div class="container">
+            <div class="row">
+                <h3>About</h3>
+                
+                <div class="card bg-myphoto-light">
+                	<div class="card-block card-body">
+                		<p>The style of photography will be customised to your personal preference, as if being shot from your own eyes.
+										You will be part of every step of the photography process, to ensure these photos feel like your own.</p>
+										<p>Our excellent photographers have many years of experience, capturing moments from weddings to sporting events of absolute
+										quality.</p>
+										<p>MyPhoto also provides superb printing options of all shapes and sizes, on any canvas, in any form. From large canvas 										prints to personalised photo albums, MyPhoto provides it all.</p>
+										<p>MyPhoto provides a full, holistic solution for all your photography needs.</p>
+									</div>
+								</div>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid myphoto-section bg-myphoto-light" id="contact">
+            <div class="row">
+                <h3>Contact Us</h3>
+            </div>
+        </div>
+        <footer class="bg-myphoto-dark">Footer placeholder</footer>
+        
+        <script src="../../jquery/jquery-3.3.1.js"></script>
+        <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>
+<!--
+When using the carousel feature after switching to Bootstrap 4, having
+used Bootstrap 3, there are two changes to be wary of. The first is that the
+carousel-item class was just called item class in Bootstrap 3. The
+second is that Bootstrap 4 comes with the icon-next and icon-prev
+classes that should be used with the carousel controls. A typical Bootstrap
+3 carousel control may look as follows:
+<a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev">
+	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+</a>
+<a class="right carousel-control" href="#gallery-carousel" role="button" data-slide="next">
+<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+</a>
+
+Cards in Bootstrap 3:
+---------------------
+Cards are a new concept, introduced with Bootstrap 4. Prior to Bootstrap 4, cards did not exist. The feature replaced Bootstrap 3's wells, thumbnails, and panels. To achieve a similar effect to the one demonstrated in Figure 3.10, we would use the well and well-lg classes:
+<div class="container-fluid myphoto-section bg-myphoto-dark">
+	<div class="container">
+		<div class="row">
+			<h3>About</h3>
+			<div class="well well-lg bg-myphoto-light">
+				<p>....</p>
+				<p>...</p>
+			</div>
+		</div>
+	</div>
+</div>
+-->

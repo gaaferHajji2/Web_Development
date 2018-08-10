@@ -1,0 +1,35 @@
+Exploitable PHP File Inclusion Functions:
+-----------------------------------------
+
+1--> include():
+---------------
+Description:
+include(string $filename)
+
+Include() is a PHP function that will read a local or remote file and interpret it as PHP.
+
+Files for including are first looked for in each include_path entry relative to the current working directory, and then in the directory of current script. E.g. if your include_path is libraries, current working directory is /www/, you included include/a.php and there is include "b.php" in that file, b.php is first looked in /www/libraries/ and then in /www/include/. If filename begins with ./ or ../, it is looked for only in the current working directory or parent of the current working directory, respectively.
+
+2--> include_once():
+--------------------
+Description:
+include_once(string $filename)
+include_once() is a PHP function just like include() but only allows a file to be included once during the scripts execution.
+
+3--> require():
+---------------
+Description:
+require( string $filename )
+The require() function in PHP is almost identical to include(), the difference is that require() will produce a Fatal Error, not just a warning when an error occurs.
+
+4--> require_once():
+--------------------
+Description:
+require_once( string $filename )
+Same difference between require_once() and require() as include_once and include().
+
+5--> fopen():
+-------------
+Description:
+resource fopen( string $filename , string $mode [, bool $use_include_path [, resource $context ]] )
+If the string $filename is in the format "protocol://...", PHP will handle it as a URL and search for a protocol handler.

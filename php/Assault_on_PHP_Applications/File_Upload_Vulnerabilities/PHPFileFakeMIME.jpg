@@ -1,0 +1,11 @@
+<?php
+header('Content-Type:image/jpeg');
+header('Content-Type:text/html');
+
+//An Example.
+$output=system('help');
+echo $output;
+echo "End Of The Output<br>";
+echo "PHP VERSION: ". phpversion(). "<br>";
+
+?>

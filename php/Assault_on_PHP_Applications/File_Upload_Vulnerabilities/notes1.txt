@@ -1,0 +1,27 @@
+1--> What Is A File Upload Vulnerability?
+-----------------------------------------
+The File Upload vulnerabilities I am referring to in this paper, are vulnerabilities in a PHP File Upload script. There may be vulnerabilities in PHP applications that allow Arbitrary File Uploads. File Upload vulnerabilities are generally found in File Upload scripts that do not do sufficient checking of what file(s) are uploaded and stored on the server. For example there are File Upload scripts that do not check the file extension of the file being uploaded. Meaning of course PHP or other code that can be interpreted/executed can be uploaded.
+	+++++++++++++++++++++++++++++++++++++++++++
+2--> Arbitrary File Uploads:
+----------------------------
+What is a Arbitrary File Upload Vulnerability?
+A Vulnerability in a File Upload script that allows a user to upload Arbitrarily any file of their choosing to the server. This obviously becomes quite a security risk, as files with scripts/code to be interpreted such as PHP, Perl, Python could be uploaded to the server and then called via the web server. Allowing remote executing of scripting on the server.
+
+Why Do These Vulnerabilities Exist?
+To put it simply, Arbitrary File Upload Vulnerabilities exist because the programmer does not do proper input validation or there is no validation done. The type of file that is be to uploaded needs to be checked and also it's extension as well. Arbitrary File Uplands are usually found where programmers have decided to create an upload script with out security coming to their mind at all.
+	+++++++++++++++++++++++++++++++++++++++++++
+3--> move_uploaded_file():
+--------------------------
+Description:
+move_uploaded_file( string $tempdirfname , string $uploadfname )
+Function used in PHP to do File Uploads, File is uploaded to a temporary directory and then moved to the servers administrators chosen directory.
+	+++++++++++++++++++++++++++++++++++++++++++
+4--> We can put PHP code into the image file simply by piping text into it through the command line.
+
+echo '<?php phpinfo(); ?>' > phpcodetobexecute.jpg
+
+Or you could use an editor such as Notepad (Windows) or pico (Linux) to delete all the information inside and simply save only your PHP code. The above coded of course is just an example, usually would be after obtaining a PHP Shell on the server.
+
+We can then simply upload this file to a vulnerable File Upload script, one which does not check the MIME type of the file, simply the file extension.
+	+++++++++++++++++++++++++++++++++++++++++++
+5--> when we upload any file to our server we must first check the content of the file (using anti-virus, reverse-tool, ...etc)
