@@ -1,7 +1,7 @@
 //load all things that we need
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 //load up the user model.
 var User = require('../app/models/user');
 
@@ -32,6 +32,7 @@ module.exports = function(passport){
 		User.findById(id, function(err, user){
 			console.log('---------------------------');
 			console.log('Inside deserialize of User, of findById user, before the done-function');
+			console.log('The User Informatio is: ' + user);
 			console.log('---------------------------');
 			done(err, user);
 		});
@@ -159,4 +160,42 @@ module.exports = function(passport){
 			});
 		});
 	}));
+	
+	 // =========================================================================
+   // GOOGLE ==================================================================
+   // =========================================================================
+   passport.use(new GoogleStrategy({
+   	clientID: configAuth.googleAuth.clientID,
+   	clientSecret: configAuth.googleAuth.clientSecret,
+   	callbackURL: configAuth.googleAuth.callbackURL
+   }, function(token, refreshToken, profile, done){
+   	//User.findOne won't fire until we have all our data back from google.
+   	process.nextTick(function(){
+   		User.findOne({'google.id':profile.id}, function(err, user){
+   			if(err){
+   				return done(err);
+   			}
+   			
+   			if(user){
+   				//if the user is foudn, log them in
+   				return done(null, user);
+   			}else{
+   				//if the user isn't found, create new user
+   				var newUser = new User();
+   				
+   				newUser.google.id = profile.id;
+   				newUser.google.token = token;
+   				newUser.google.name = profile.displayName;
+   				newUser.google.email = profile.emails[0].value;
+   				
+   				newUser.save(function(err){
+   					if(err)
+   						throw err
+   					
+   					return done(null, newUser);
+   				});
+   			}
+   		});
+   	});
+   }));
 };

@@ -28,7 +28,7 @@ var configDB = require('./config/database.js');
 //connect to mongodb.
 mongoose.connect(configDB.url, {useNewUrlParser:true});
 
-require('./config/passport')(passport);
+require('./config/passport2')(passport);
 
 //setup the express application
 
@@ -64,7 +64,7 @@ app.use(flash());
 
 //console.log('use passport, flash');
 
-require('./app/routes/routes.js')(app, passport);
+require('./app/routes/routes2.js')(app, passport);
 //console.log('require The routes');
 
 app.listen(port);
