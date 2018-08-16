@@ -1,0 +1,21 @@
+{
+  "name": "test_push_notification",
+  "version": "1.0.0",
+  "description": "Test Push Notification without going through an intermediary service like PubNub",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Notifications",
+    "With",
+    "Nodjs"
+  ],
+  "author": "Gaafer Hajji",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.18.2",
+    "express": "4.16.3",
+    "web-push": "3.3.2"
+  }
+}
