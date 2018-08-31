@@ -1,0 +1,19 @@
+1--> Introduction:
+------------------
+What Is SQL Injection? SQL Injection Exploitation is when the a SQL Query string is passed to the database that contains user input, and that user input is crafted to execute in the context of the other part of the SQL Query to do something the attacker intended.
+
+The most important factor for SQLi: At the same time, insufficient validation (or lack thereof) or sanitation of the user input is what leads to the user compromising the SQL Query string.
+
+When an SQL Query is injected into the statement can be appended to and/or terminated.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> Terms used in SQLi:
+------------------------
+*Bypassing Authentication via SQL Injection.
+*Terminating a SQL Query.
+*Injecting a UNION to retrieve addition information from the database.
+*Injecting a UNION Statement with a INTO OUTFILE for File Writing.
+*Injecting into INSERT Statements.
+*Injecting into INSERT Statement and Performing a SQL Subquery.
+*Injecting into UPDATE statements.
+*Injecting into a DELETE statement.
+*Examples of SQL Injection vulnerabilities in real world applications.

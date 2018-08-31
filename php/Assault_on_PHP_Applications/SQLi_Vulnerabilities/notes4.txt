@@ -1,0 +1,44 @@
+Authentication Bypass [Example]:
+--------------------------------
+You probably noticed in the database posted above that one of the users had an MD5 Hash for a password. This was because this was inserted using a HTML Form which created an MD5 hash from the password string. This Form is used later on as an example of Injection into an INSERT statement used for creating a record of the user in the database. 
+
+In this example the password field is an MD5, so the username is the point of injection.
+
+Obviously you cannot do an Injection from a field which becomes an MD5 hash of a string.
+
+$loginauthsql = "SELECT * FROM USERS WHERE USER_NAME = '" . $username . "' AND PASSWORD = '" . $password . "'";
+
+MySQL Server supports three comment styles:
+-------------------------------------------
+From a “ # ” character to the end of the line.
+
+From a “ -- ” sequence to the end of the line. In MySQL, the “ -- ” (double-dash) comment style requires the second dash to be followed by at least one whitespace or control character (such as a space, tab, newline, and so on). This syntax differs slightly from standard SQL comment syntax, as discussed in Section 1.7.5.6, “ '--' as the Start of a Comment ” .
+
+From a /* sequence to the following */ sequence, as in the C programming language. This syntax allows a comment to extend over multiple lines because the beginning and closing sequences need not be on the same line.
+
+MySQL Server supports some variants of C-style comments. These enable you to write code that includes MySQL extensions, but is still portable, by using comments of the following form:
+
+/*! MySQL-specific code */
+
+In this case, MySQL Server parses and executes the code within the comment as it would any other SQL statement, but other SQL servers will ignore the extensions. For example, MySQL Server recognizes the STRAIGHT_JOIN keyword in the following statement, but other servers will not:
+
+SELECT /*! STRAIGHT_JOIN */ col1 FROM table1,table2 WHERE ...
+
+If you add a version number after the “ ! ” character, the syntax within the comment is executed only if the MySQL version is greater than or equal to the specified version number. The TEMPORARY keyword in the following comment is executed only by servers from MySQL 3.23.02 or higher:
+
+CREATE /*!32302 TEMPORARY */ TABLE t (a INT);
+
+The comment syntax just described applies to how the mysqld server parses SQL statements. The mysql client program also performs some parsing of statements before sending them to the server. (It does this to determine statement boundaries within a multiple-statement input line.)
+
+The use of short-form mysql commands such as \C within multi-line /* ... */ comments is not supported.
+
+HTML Form POST:
+---------------
+Value Name 	Value Data
+----------	-----------
+username 	admin' OR 'x'='x --
+password 	x
+
+Result: Granted.
+
+

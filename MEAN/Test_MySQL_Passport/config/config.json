@@ -1,0 +1,46 @@
+{
+ 
+    "development": {
+ 
+        "username": "gaafer",
+ 
+        "password": "Password_123",
+ 
+        "database": "sequelize_passport",
+ 
+        "host": "127.0.0.1",
+ 
+        "dialect": "mysql",
+
+	"operatorsAliases": false
+    },
+ 
+    "test": {
+ 
+        "username": "",
+ 
+        "password": null,
+ 
+        "database": "",
+ 
+        "host": "",
+ 
+        "dialect": "mysql"
+ 
+    },
+ 
+    "production": {
+ 
+        "username": "",
+ 
+        "password": null,
+ 
+        "database": "",
+ 
+        "host": "127.0.0.1",
+ 
+        "dialect": "mysql"
+ 
+    }
+ 
+}

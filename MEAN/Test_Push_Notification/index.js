@@ -1,13 +1,27 @@
-const var webpush = require('web-push');
-const var express = require('express');
-const var app	  = express();
-const var morgan  = require('morgan');
-const var bodyParser = require('body-parser');
-const var config  = require('./config.js');
+const webpush = require('web-push');
+const express = require('express');
+const app	  = express();
+const morgan  = require('morgan');
+const bodyParser = require('body-parser');
+const config  = require('./config.js');
 
-const var publicVapidKey = config.publicVapidKey;
-const var privateVapidKey = config.privateVapidKey;
+const publicVapidKey = config.publicVapidKey;
+const privateVapidKey = config.privateVapidKey;
 
 //----------------------------
-weppush.setVapidDetails('mailto:gaafer.hajji1995@gmail.com', publicVapidKey, privateVapidKey);
+webpush.setVapidDetails('mailto:gaafer.hajji1995@gmail.com', publicVapidKey, privateVapidKey);
 //----------------------------
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+require('./routes.js')(app, webpush);
+
+//to serve the static content
+app.use(express.static('./'));
+
+app.use(morgan('dev'));
+
+app.listen(3000, ()=>{
+	console.log('Application run of localhost:3000');
+});

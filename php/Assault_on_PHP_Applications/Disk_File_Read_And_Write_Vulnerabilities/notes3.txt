@@ -1,0 +1,54 @@
+1--> Exploitable Functions:
+---------------------------
+fopen():
+--------
+Description:
+------------
+resource fopen( string $filename , string $mode [, bool $use_include_path [, resource $context ]] )
+If the string $filename is in the format "protocol://...", PHP will handle it as a URL and search for a protocol handler.
+
+In relation to File Read vulnerabilities being able to manipulate user input and exploit fopen() can lead to compromise of sensitive information or possibly execution of code if what is being read is interpreted. 
+
+Exploiting fopen() may be part of exploiting a File Write vulnerability, if you were able to have any input into what is being written you could have Remote PHP Code Execution.(for example we can set buffer-overflow code inside the file, and the function -fopen- will open the file and the code may executed if we don't check the extension of the file).
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> file():
+------------
+Description:
+------------
+array file ( string $filename [, int $flags= 0 [, resource $context ]] )
+Reads the contents of the file specificed in $filename into an array, function usually only takes one parameter.
+
+If fopen_wrappers has been enabled on PHP the filename can be a URL and file() can read remote files. 
+
+Depending on whether or not allow_url_fopen is enabled and what is done with the data In the array. file(), readfile(), file_get_contents() could be used to perform Remote Code Execution. (we should take care espicially from images).
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3--> readfile():
+----------------
+Description:
+------------
+int readfile ( string $filename [, bool $use_include_path= false [, resource $context ]] ) Returns an Integer, the number of bytes read from the file into the output buffer ($context).(depending on the content, it can lead to dll injection or LFI remote code execution -- from my notes --validate it--).
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4--> file_get_contents():
+-------------------------
+Description:
+------------
+string file_get_contents ( string $filename [, int $flags= 0 [, resource $context [, int $offset= -1 [, int $maxlen= -1 ]]]] )
+
+This function is similar to file(), except that file_get_contents() returns the file in a string, starting at the specified offset.(The same thing of readfile()).
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+5--> fgets():
+-------------
+Description:
+------------
+string fgets ( resource $handle [, int $length ] )
+
+Reads a line from a file pointed from a file handle. (The same thing for readfile() and we should care of extension, metadata, when we read content we should fragment it, then check it, delete any malicious pattern, then output it, may in many case we should change the extension and the read form).
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+6--> glob():
+-------------
+Description:
+------------
+array glob ( string $pattern [, int $flags= 0 ] )
+
+The glob() function searches for all the pathnames and files matching the given pattern.(the same thing for fgets(), and we should take care of path travelsalling and directory traversing).
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

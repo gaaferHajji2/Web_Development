@@ -1,0 +1,64 @@
+1--> Cookies Explained:
+-----------------------
+What Is A Cookie?
+------------------
+A HTTP Cookie is a small amount of text sent from a Web Server to a Client Web Browser, this text is stored as a file on hard disk which is read by the browser. Each time the client makes a request from the server, the cookie is read and sent to the web server.
+
+What Are Attributes of a Cookie?
+---------------------------------
+setcookie(name, value, expire, path, domain);
+
+1-> Name 	– The name of the Cookie in the $_COOKIE[] array.
+2-> Value 	– The value to be stored inside the cookie, multiple values are usually separated by a colon.
+3-> Expire 	– When the Cookie will expire and no longer be sent by the client browser to the web server.
+4-> Path 	– The path of the file on the server.
+5-> Domain 	– The domain name of the web site you are accessing.
+	++++++++++++++++++++++++++++++++++++++++
+2--> What Are Cookies Used For?
+--------------------------------
+Cookies are used by the web server to identify different users of a web application.
+
+With out the use of HTTP Cookies HTTP Transactions would be stateless and requests of different PHP pages would just be individual unrelated requests.
+
+Cookies can be used for storing an identifier on the client that can be sent to the web server that can be referenced. Cookies may be used to hold an identifier to relates to a $_SESSION[] variable that holds information on the user.
+
+Cookies are of course also used for authentication, they usually contain a username, password and sometimes another identifier.
+	++++++++++++++++++++++++++++++++++++++++
+Example: InsecureCookieCreation.php
+------------------------------------
+In the example both the admin username, admin password and email are hard coded into the PHP script. Since this is just an example there is no need for the script to have database access, although this would usually be the case.
+
+Once the user is authorised a cookie is created for authentication that contains the username and user email separated by a colon.
+
+The user can then proceed to the Administration page where the cookie is authenticated.
+
+Reviewing the above code you will find that clearly the Cookie Authenication is insecure. The admin username and admin email are checked which are contained in the cookie created. The problem with this is that both the admin username and admin email are not necessarily private pieces of information. With most web application software such as Forums or Content Management Systems these could probably be some how obtained or guessed (possibly default username and same email as Administrator whois).
+
+However we can easily forge a cookie to allow us access, this is usually referred to as Cookie Poisoning.
+
+[Value] Contents of Forged Cookie:
+admin%3Aadmin%40server.com
+
+In Opera you can go to Tools → Advanced → Cookies and edit cookies that have been created. Although you cannot create them. So to do this I would recommend using Firefox with the Add N' Edit Cookies plug-in.
+
+After creating the forged cookie we can then navigate to the Administration panel to be authenticated and authorised to view the page.
+	++++++++++++++++++++++++++++++++++++++++
+3--> Secure Cookie Handling:
+-----------------------------
+Secure Cookie Creation and Management in web applications doesn't just involve any one single factor.
+
+There are a number of factors that contribute both to the security and vulnerability of cookies used for Session Management, usually containing a session "key" or "ticket".
+	++++++++++++++++++++++++++++++++++++++++
+4--> Secure Cookie Management – Points of Focus:
+------------------------------------------------
+	1--> Cookies should be transmitted securely, strong (and not flawed) encryption must be used.
+	
+	2--> Cookies should not contain passwords, whether in plain text, encrypted or hashed.
+	
+	3--> Cookies contents should not contain sensitive information.
+	
+	4--> Authentication should not be done with an SQL Query formed from Cookie contents.
+	
+	5--> Cookies should not contain permissions. (Very Important)
+	
+	6--> Generated Session Keys or Tickets need to be generated securely.

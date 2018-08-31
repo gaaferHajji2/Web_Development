@@ -1,0 +1,88 @@
+var express = require('express');
+var app = express();
+
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
+var User = require('../user/User');
+
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var config = require('../config');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(morgan('dev'));
+
+app.post('/register', function(req, res){
+	var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+	
+	User.create({
+		name:req.body.name,
+		email:req.body.email,
+		password:hashedPassword	
+	}, function(err, user){
+		if(err){
+			return res.status(500).send("There was a problem registering the user");
+		}
+		//else create the token
+		//jwt.sign take three things:
+			//1--> the payload here it is the user id.
+			//2--> secret key.
+			//3--> options that we use.
+		var token = jwt.sign({id:user._id}, config.secret, 
+			{	
+				expiresIn:86400//expires in 24-hours
+			});
+		//then we use js-object to send the result -- don't do this in production, send to email, or any encrypted, safe place.(sms)
+		res.status(200).send({auth:true, token:token});
+	});
+});
+
+app.get('/me', function(req, res){
+		var token = req.headers['x-access-token'];
+		if(!token){
+			return res.status(401).send({auth:false, message:"No Token Provided."});
+		}
+		//else check the token that we send.
+		jwt.verify(token, config.secret, function(err, decoded){
+			if(err){
+				return res.status(500).send({auth: fase, message: 'Failed to authenticate tokens.'});
+			}
+			//else send the decoded part.
+			//res.status(200).send(decoded);//for debug
+			
+			User.findById(decoded.id, {password:0},function (err, user) {
+				if (err) return res.status(500).send("There was a problem finding the user.");
+				
+				if (!user) return res.status(404).send("No user found.");
+		
+				res.status(200).send(user);
+			});
+		});
+});
+
+app.post('/login', function(req, res) {
+  User.findOne({ email: req.body.email }, function (err, user) {
+    
+    if (err) return res.status(500).send('Error on the server.');
+    
+    if (!user) return res.status(404).send('No user found.');
+    
+    var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    
+    if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
+    
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400 // expires in 24 hours
+    });
+    
+    res.status(200).send({ auth: true, token: token });
+  });
+});
+
+app.get('/logout', function(req, res) {
+  res.status(200).send({ auth: false, token: null });
+});
+
+module.exports = app;

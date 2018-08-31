@@ -1,0 +1,14 @@
+1--> magic_quotes_gpc:
+----------------------
+What is magic_quotes_GPC ?
+magic_quotes_gpc is a feature in PHP used for automatically escaping incoming data contained in GET, POST, COOKIE variables.
+
+Characters such as ' (single quote), “ (double quote) and \ (backslash) are escaped with a backslash \. This would be identical running the function addslashes() on all GET, POST and COOKIE variables.
+
+magic_quotes_gpc and SQL Injection:
+-----------------------------------
+If PHP has magic_quotes_gpc enabled then an attempt to break out of a value in a statement using a single quote will fail, because it will be escaped with a backslash \. A single quote (') will be preceded with a backslash (\').
+
+If you are able to execute PHP Code you can use the get_magic_quotes_gpc function to see if it is turned off or on.
+
+Important Note: magic_quotes_gpc has been DEPRECATED since PHP 5.3.0 and REMOVED PHP 6.0.0.

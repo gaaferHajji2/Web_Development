@@ -1,0 +1,4 @@
+https://code.tutsplus.com/tutorials/using-passport-with-sequelize-and-mysql--cms-27537
+
+To: 4. Write a Passport Strategy
+

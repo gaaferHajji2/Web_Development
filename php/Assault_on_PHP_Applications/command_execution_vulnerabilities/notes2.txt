@@ -1,0 +1,33 @@
+1--> Exploitable Functions:
+---------------------------
+1--> system():
+--------------
+Description:
+------------
+string system ( string $command [, int &$return_var ] )
+Executes a system command and returns the output, Identical to the C function system();
+
+2--> passthru():
+----------------
+Description:
+------------
+void passthru ( string $command [, int &$return_var ] )
+
+3--> exec():
+------------
+Description:
+------------
+string exec ( string $command [, array &$output [, int &$return_var ]] )
+
+4--> popen():
+-------------
+Description:
+------------
+resource popen ( string $command , string $mode )
+Opens a pipe to a process executed by forking the command given by command.
+
+5--> shell_exec():
+------------------
+Description:
+------------
+string shell_exec ( string $cmd )

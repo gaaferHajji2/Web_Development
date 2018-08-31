@@ -1,0 +1,58 @@
+1--> Disk File I/O In PHP:
+--------------------------
+PHP File Output Explained:
+--------------------------
+PHP File I/O is very much like C.
+
+Although PHP does actually have a simple function that can be used to read the contents of a file in just one line of code.
+
+file( string $filename, int $flags, resource $context );
+
+Or
+
+readfile( string $filename, [$include_path], [$context]);
+
+file() reads the input into an array, while readfile() reads the into a buffer.
+
+Usually though the file is opened with fopen() and then handled like in the example below:
+<?php
+	$filehdl = fopen("config.cfg", "w+");
+	
+	while(!feof($filehdl))
+	{
+		echo fgets($filehdl);
+	}
+	
+	fclose($filehdl);
+?>
+
+Functions such as fread() can be used also when wanting to read from an open file.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2--> Exploiting File Read Vulnerabilities:
+------------------------------------------
+With PHP File Read vulnerabilities the input the user would select or the application would allow would probably for the filename or the complete file path. Of course if this is from user input other files on the system could possibly be read if a vulnerability were exploited.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3--> Directory Traversal:
+--------------------------
+What Is Directory Traversal?
+----------------------------
+Directory Traversal is simply going from through a file system from one folder to enough. In Windows and UNIX operating systems a single dot is used to relate to the current working directory and two dotes denotes the parent folder of the current working directory. Both of these can be part of a filepath meaning when what ever function goes to use the filepath it will traverse upwards through the file system if you have /../ as part of the filepath, for each of with one folder traversed.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4--> Linux and Windows Directory Traversal:
+-------------------------------------------
+When doing Directory Traversal on different operating systems it must be remembered that the file system is different. This of course may mean that based upon the operating system a program may be located deeper within the folder structure of the file system and of course in a different location. Windows uses a backward slash \ to denote different folder in the file system, while in Linux/Unix it is a forward slash /. If you know the absolute path of your target file on the target file system then you might as well use many \..\ to ensure traversing the complete way up the file system.
+
+Linux Directory Traversal: /../../../../
+
+Windows Directory Traversal: \..\..\..\..\
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+5--> What Can Directory Traversal Be Used For?
+-----------------------------------------------
+Directory Traversal as far as exploiting PHP Applications can be used to traverse upwards through the folder file system. In PHP Applications directory traversal is usually exploitable when part of a filepath (usually the filename) is from user input, the the attacker is able to traverse up through the hard coded directories and then into directories and then finally the file the attacker is after. Specific files in the file system containing sensitive information (such as configuration files) are usually targeted. Files containing an attackers PHP code may also be a target if the text to be read is later to be interpreted by PHP.
+
+Directory Traversal Used To Access File Containing PHP Code:
+
+http://server.com/file.php?name=\..\..\upload\phpcodetobeexecuted.jpg
+
+The above example would traverse up two directories then into the upload folder and then to the file.
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++
